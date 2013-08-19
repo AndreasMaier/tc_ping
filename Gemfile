@@ -1,4 +1,9 @@
 # A sample Gemfile
-source "https://rubygems.org"
+source 'https://rubygems.org'
+ruby '1.9.3'
 
-gem "rack"
+gem 'rack'
+gem 'sinatra'
+gem 'rufus-scheduler'
+gem 'httparty'
+gem 'mail'

@@ -1,3 +1,3 @@
-require './tc_ping'
+require './tc_ping_app'
 
 run Sinatra::Application
