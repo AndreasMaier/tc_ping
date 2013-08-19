@@ -32,11 +32,11 @@ Mail.defaults do
 end
 
 scheduler.every '1m' do
-  mail = Mail.deliver do
-    to 'andreas.maier@gmail.com'
-    from 'token@tcping.com'
-    subject 'Feedback for my Sintra app'
-  end
+  #mail = Mail.deliver do
+  #  to 'andreas.maier@gmail.com'
+  #  from 'token@tcping.com'
+  #  subject 'Feedback for my Sintra app'
+  #end
   some_var = some_var + 1
 end
 
