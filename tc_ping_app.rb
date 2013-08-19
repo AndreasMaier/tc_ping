@@ -2,6 +2,7 @@ require 'sinatra'
 require 'rufus/scheduler'
 require 'httparty'
 require 'mail'
+require 'json'
 
 scheduler = Rufus::Scheduler.start_new
 some_var = 1
@@ -44,22 +45,4 @@ get '/' do
   "Hello world! #{some_var}\n\nusername: #{username}\npassword: #{password}"
 end
 
-def get_credentials
-
-end
-
-'{
-  "sendgrid-n/a": [
-        {
-            "name":"email_sender",
-            "label":"sendgrid-n/a",
-            "tags":[],
-            "plan":"free",
-            "credentials": {
-              "username":"mUwE512IyA",
-              "hostname":"smtp.sendgrid.net",
-              "password":"aEMTgKY1Sl"
-            }
-        }
-  ]
-}'
+#{"sendgrid-n/a":[{"name":"email_sender","label":"sendgrid-n/a","tags":[],"plan":"free","credentials": {"username":"mUwE512IyA","hostname":"smtp.sendgrid.net","password":"aEMTgKY1Sl"}}]}
