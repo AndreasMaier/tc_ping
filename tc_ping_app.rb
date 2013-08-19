@@ -30,21 +30,36 @@ end
 
 get '/' do
   #response = HTTParty.get('http://techcrunch.com/')
-  "Hello world! #{some_var}\n\n#{ENV['VCAP_SERVICES']}"
+  credentials = host = username = password = ''
+  if !ENV['VCAP_SERVICES'].blank?
+    JSON.parse(ENV['VCAP_SERVICES']).each do |k,v|
+      if !k.scan("sendgrid").blank?
+        credentials = v.first.select {|k1,v1| k1 == "credentials"}["credentials"]
+        host = credentials["hostname"]
+        username = credentials["username"]
+        password = credentials["password"]
+      end
+    end
+  end
+  "Hello world! #{some_var}\n\nusername: #{username}\npassword: #{password}"
 end
 
-#{
-#  "sendgrid-n/a": [
-#        {
-#            "name":"email_sender",
-#            "label":"sendgrid-n/a",
-#            "tags":[],
-#            "plan":"free",
-#            "credentials": {
-#              "username":"mUwE512IyA",
-#              "hostname":"smtp.sendgrid.net",
-#              "password":"aEMTgKY1Sl"
-#            }
-#        }
-#  ]
-#}
+def get_credentials
+
+end
+
+'{
+  "sendgrid-n/a": [
+        {
+            "name":"email_sender",
+            "label":"sendgrid-n/a",
+            "tags":[],
+            "plan":"free",
+            "credentials": {
+              "username":"mUwE512IyA",
+              "hostname":"smtp.sendgrid.net",
+              "password":"aEMTgKY1Sl"
+            }
+        }
+  ]
+}'
