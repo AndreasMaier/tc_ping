@@ -6,6 +6,7 @@ require 'json'
 require 'nokogiri'
 require 'open-uri'
 require 'awesome_print'
+require 'redis'
 
 scheduler = Rufus::Scheduler.start_new
 some_var = 1
@@ -44,10 +45,22 @@ scheduler.every '1m' do
 end
 
 get '/' do
-  #response = HTTParty.get('http://techcrunch.com/')
   response = Nokogiri::HTML(open('http://www.techcrunch.com'))
 
-  ap response
+  results = []
+  response.css('.left-container .post .headline').each do |item|
+    if item.text =~ /(Disrupt|Hackathon)/
+      results << item
+    end
+  end
+
+  r = Redis.new
+
+  a = r.get('somekey')
+  b = r.get('otherkey')
+
+  puts "a #{a}"
+  puts "b #{b}"
 
   "Hello world! #{some_var}\n\n"
 end
