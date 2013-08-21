@@ -3,6 +3,9 @@ require 'rufus/scheduler'
 require 'httparty'
 require 'mail'
 require 'json'
+require 'nokogiri'
+require 'open-uri'
+require 'awesome_print'
 
 scheduler = Rufus::Scheduler.start_new
 some_var = 1
@@ -42,5 +45,9 @@ end
 
 get '/' do
   #response = HTTParty.get('http://techcrunch.com/')
+  response = Nokogiri::HTML(open('http://www.techcrunch.com'))
+
+  ap response
+
   "Hello world! #{some_var}\n\n"
 end

@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    awesome_print (1.1.0)
     httparty (0.11.0)
       multi_json (~> 1.0)
       multi_xml (>= 0.5.2)
@@ -11,6 +12,7 @@ GEM
     mime-types (1.24)
     multi_json (1.7.9)
     multi_xml (0.5.5)
+    nokogiri (1.5.5)
     polyglot (0.3.3)
     rack (1.5.2)
     rack-protection (1.5.0)
@@ -31,9 +33,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  awesome_print
   httparty
   json
   mail
+  nokogiri
   rack
   rufus-scheduler
   sinatra
