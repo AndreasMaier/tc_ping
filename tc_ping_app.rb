@@ -11,7 +11,7 @@ require 'redis'
 scheduler = Rufus::Scheduler.start_new
 some_var = 1
 
-credentials = sg_username = sg_password = rds_host = rds_port = rds_username = rds_password = ''
+credentials = sg_username = sg_password = rds_host = rds_port = rds_password = ''
 if !ENV['VCAP_SERVICES'].blank?
   JSON.parse(ENV['VCAP_SERVICES']).each do |k,v|
     if !k.scan("sendgrid").blank?
@@ -24,7 +24,6 @@ if !ENV['VCAP_SERVICES'].blank?
       credentials = v.first.select {|k1,v1| k1 == "credentials"}["credentials"]
       rds_host = credentials["hostname"]
       rds_port = credentials["port"]
-      rds_username = credentials["username"]
       rds_password = credentials["password"]
     end
   end
@@ -82,7 +81,7 @@ end
 get '/' do
 
 
-  r = Redis.new(host: "pub-redis-19494.us-east-1-4.1.ec2.garantiadata.com", port: "19494")
+  r = Redis.new(host: rds_host, port: rds_port, password: rds_password)
 
   r.set('somekey', 'stuff')
   a = r.get('somekey')
