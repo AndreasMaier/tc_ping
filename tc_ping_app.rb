@@ -52,43 +52,51 @@ scheduler.every '1m' do
   #end
   #
   #unless results.empty?
-  #  redis = Redis.new( host:  )
+  #  redis = Redis.new(host: rds_host, port: rds_port, password: rds_password)
   #
   #  results.each do |item|
-  #    # get id
-  #    id = get_news_id item
   #    # if id is not in db
-  #
-  #    # get header
-  #    # get link
-  #    # send email
+  #    unless redis.get(item["id"])
+  #      Mail.deliver do
+  #        to 'andreas.maier@gmail.com'
+  #        from 'token@tcping.com'
+  #        subject 'Event triggered on Hackernews'
+  #        body "<div>Keywords were found in the news with the title</div><div>#{item.text.strip}</div><a href=#{item["href"]}>link</a>"
+  #      end
+  #    end
   #  end
   #end
-
-
-  #mail = Mail.deliver do
-  #  to 'andreas.maier@gmail.com'
-  #  from 'token@tcping.com'
-  #  subject 'Feedback for my Sintra app'
-  #end
-  some_var = some_var + 1
-end
-
-def get_news_id(item)
-  item["id"]
+  #
+  #some_var = some_var + 1
 end
 
 get '/' do
+  response = Nokogiri::HTML(open('http://www.techcrunch.com'))
 
+  results = []
+  response.css('.left-container .post .headline a').each do |item|
+    if item.text =~ /(Disrupt|Hackathon|Jimdo)/
+      results << item
+    end
+  end
 
-  r = Redis.new(host: rds_host, port: rds_port, password: rds_password)
+  unless results.empty?
+    redis = Redis.new(host: rds_host, port: rds_port, password: rds_password)
 
-  r.set('somekey', 'stuff')
-  a = r.get('somekey')
-  b = r.get('otherkey')
+    results.each do |item|
+      # if id is not in db
+      unless redis.get(item["id"])
+        Mail.deliver do
+          to 'andreas.maier@gmail.com'
+          from 'token@tcping.com'
+          subject 'Event triggered on Hackernews'
+          body "<div>Keywords were found in the news with the title</div><div>#{item.text.strip}</div><a href=#{item["href"]}>link</a>"
+        end
+      end
+    end
+  end
 
-  puts "a #{a}"
-  puts "b #{b}"
+  some_var = some_var + 1
 
-  "Hello world! #{some_var}\n\n"
+  "Hello world! #{some_var} new \n\n"
 end
