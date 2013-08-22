@@ -89,9 +89,11 @@ get '/' do
         Mail.deliver do
           to 'andreas.maier@gmail.com'
           from 'token@tcping.com'
-          subject 'Event triggered on Hackernews'
-          body "<div>Keywords were found in the news with the title</div><div>#{item.text.strip}</div><a href=#{item["href"]}>link</a>"
+          subject 'Event triggered on Techcrunch'
+          body "Keywords were found in the news with the title\n\n#{item.text.strip}\n\n#{item["href"]}"
         end
+
+        redis.set(item["id"], item["href"])
       end
     end
   end
