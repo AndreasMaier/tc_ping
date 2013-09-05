@@ -41,7 +41,7 @@ Mail.defaults do
   }
 end
 
-scheduler.every '1m' do
+scheduler.every '10m' do
   response = Nokogiri::HTML(open('http://www.techcrunch.com'))
 
   results = []
